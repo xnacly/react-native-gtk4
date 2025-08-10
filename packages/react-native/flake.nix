@@ -3,26 +3,26 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
-  outputs = { self, nixpkgs }:
-    let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
-    in {
-      devShells.${system}.default = pkgs.mkShell {
-        packages = [
-          pkgs.pkg-config
-          pkgs.gcc
-          pkgs.gtk4
-          pkgs.cmake
-          pkgs.ninja
-          # pkgs.hermes
-          # pkgs.nodejs
-          # pkgs.yarn
-        ];
+  outputs = { self, nixpkgs }: let
+    supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+  in {
+    devShells = forAllSystems (system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in {
+        default = pkgs.mkShell {
+          nativeBuildInputs = [
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.gcc
+            pkgs.pkg-config
+          ];
 
-        shellHook = ''
-          export PKG_CONFIG_PATH=${pkgs.gtk4.dev}/lib/pkgconfig:$PKG_CONFIG_PATH
-        '';
-      };
-    };
+          buildInputs = [
+            pkgs.gtk4
+          ];
+        };
+      });
+  };
 }

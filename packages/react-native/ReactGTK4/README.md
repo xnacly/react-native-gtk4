@@ -15,9 +15,8 @@ attempt this here.
 > You will need nix with flakes:
 
 ```shell
-cd ./react-native-gtk4
+cd ./react-native-gtk4/packages/react-native
 nix develop
-cd ./packages/react-native
 cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ninja -C build
 ```
