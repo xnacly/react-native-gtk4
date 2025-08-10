@@ -20,3 +20,19 @@ nix develop
 cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ninja -C build
 ```
+
+## Todo:
+
+1. spin up hermes
+2. load bundle
+3. translation from rn components to gtk widgets
+4. map rn event loop to gtk event loop 
+
+### Getting to the mvp faster:
+
+- skipping fabric
+- hardcode react application `<Text>` component
+- skip layout engine
+- skip event managment
+
+
